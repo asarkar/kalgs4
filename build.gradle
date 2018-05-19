@@ -1,0 +1,71 @@
+plugins {
+    id "org.jetbrains.kotlin.jvm" version "1.2.41" apply false
+    id "org.jlleitschuh.gradle.ktlint" version "4.0.0" apply false
+}
+
+subprojects {
+    group = "org.abhijitsarkar.kalgs4"
+    version = "1.0.0-SNAPSHOT"
+
+    apply plugin: "org.jetbrains.kotlin.jvm"
+    apply plugin: "org.jlleitschuh.gradle.ktlint"
+
+    ktlint {
+        android = false
+        reporters = ["PLAIN", "CHECKSTYLE"]
+        ignoreFailures = false
+    }
+
+    repositories {
+        jcenter()
+    }
+
+    dependencies {
+        implementation(
+                "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion",
+                "edu.princeton.cs:algs4:$algsVersion"
+
+        )
+        testImplementation(
+                "org.jetbrains.kotlin:kotlin-test:$kotlinVersion",
+                "org.jetbrains.kotlin:kotlin-test-junit:$kotlinVersion"
+        )
+    }
+
+    tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile) {
+        kotlinOptions {
+            jvmTarget = "1.8"
+            allWarningsAsErrors = true
+        }
+    }
+
+    jar {
+        baseName = rootProject.name
+        appendix = project.name
+    }
+}
+
+project(":test") {
+    configurations {
+        unitTest.extendsFrom testImplementation
+    }
+
+    task testJar(type: Jar) {
+        from sourceSets.test.output.classesDirs
+        classifier = "tests"
+    }
+
+    artifacts {
+        unitTest testJar
+    }
+}
+
+project(":graph") {
+    dependencies {
+        implementation(
+                project(":core"),
+                project(":sorting")
+        )
+        testImplementation(project(path: ":test", configuration: "unitTest"))
+    }
+}

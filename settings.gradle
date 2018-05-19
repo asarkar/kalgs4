@@ -1,0 +1,5 @@
+rootProject.name = "kalgs4"
+include ":core"
+include ":sorting"
+include ":graph"
+include ":test"
