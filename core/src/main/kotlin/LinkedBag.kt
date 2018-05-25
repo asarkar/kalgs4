@@ -4,9 +4,7 @@ package org.abhijitsarkar.kalgs4
  * @author Abhijit Sarkar
  */
 
-fun <Item> mutableBagOf(vararg items: Item): MutableBag<Item> = LinkedBag<Item>(*items)
-
-class LinkedBag<Item>(vararg items: Item) : MutableBag<Item> {
+class LinkedBag<Item> internal constructor(vararg items: Item) : MutableBag<Item> {
     private var n: Int = 0
     private var first: Node<Item>? = null
 

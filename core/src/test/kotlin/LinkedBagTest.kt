@@ -34,6 +34,6 @@ class LinkedBagTest {
 
     @Test
     fun `should throw NoSuchElementException if iterating on an empty bag`() {
-        assertFailsWith(NoSuchElementException::class, { mutableBagOf<Any>().iterator().next() })
+        assertFailsWith(NoSuchElementException::class) { mutableBagOf<Any>().iterator().next() }
     }
 }

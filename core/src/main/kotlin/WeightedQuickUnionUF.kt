@@ -3,7 +3,7 @@ package org.abhijitsarkar.kalgs4
 /**
  * @author Abhijit Sarkar
  */
-class WeightedQuickUnionUF(private val n: Int) : UnionFind {
+class WeightedQuickUnionUF internal constructor(private val n: Int) : UnionFind {
     private val parent: IntArray = IntArray(n)
     private val size: IntArray = IntArray(n)
     private var count = 0

@@ -13,7 +13,7 @@ class MinPQImplTest {
 
     @Test
     fun `should start with an empty queue and then add and remove items`() {
-        val q = MinPQImpl<Int>(10)
+        val q = emptyMinPQ<Int>()
         assertTrue(q.isEmpty)
         assertEquals(0, q.size)
 
@@ -26,7 +26,7 @@ class MinPQImplTest {
 
     @Test
     fun `should start with given keys and then add and remove items`() {
-        val q = MinPQImpl<Int>(keys = keys.toTypedArray())
+        val q = minPQOf<Int>(keys.toTypedArray())
         assertFalse(q.isEmpty)
         assertEquals(6, q.size)
 
@@ -35,7 +35,7 @@ class MinPQImplTest {
 
     @Test
     fun `should iterate the keys`() {
-        val q = MinPQImpl<Int>(keys = keys.toTypedArray())
+        val q = minPQOf<Int>(keys.toTypedArray())
 
         val items = q.iterator()
                 .asSequence()
@@ -44,7 +44,7 @@ class MinPQImplTest {
         assertEquals(keys.sorted(), items.sorted())
     }
 
-    private fun assertPQ(q: MinPQImpl<Int>) {
+    private fun assertPQ(q: MinPQ<Int>) {
         q.insert(4)
         assertEquals(7, q.size)
 

@@ -13,7 +13,7 @@ Kotlin adaptation of the Java source code for the algorithms and clients in the 
 
 [![Build Status](https://travis-ci.org/asarkar/kalgs4.svg?branch=master)](https://travis-ci.org/asarkar/kalgs4)
 
-The repository builds on Travis CI on every commit. To build locally, clone and run `./gradlew clean build` from the
+The repository continually builds on Travis CI. To build locally, run `./gradlew clean build` from the
 root directory.
 
 ## Publication to Public Maven Repository

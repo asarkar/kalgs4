@@ -3,15 +3,13 @@ package org.abhijitsarkar.kalgs4.sorting
 /**
  * @author Abhijit Sarkar
  */
-fun <Key> minPQ(): MinPQ<Key> = MinPQImpl()
-
 class MinPQImpl<Key> : MinPQ<Key> {
     private val comparator: Comparator<Key>
 
     private var keys: Array<Key?>
     private var n: Int = 0
 
-    constructor(keys: Array<Key?>, comparator: Comparator<Key>? = null) : this(keys.size, comparator) {
+    internal constructor(keys: Array<Key?>, comparator: Comparator<Key>?) : this(keys.size, comparator) {
         keys
                 .filter { it != null }
                 .forEach {
@@ -20,7 +18,7 @@ class MinPQImpl<Key> : MinPQ<Key> {
     }
 
     @Suppress("UNCHECKED_CAST")
-    constructor(n: Int = 0, comparator: Comparator<Key>? = null) {
+    internal constructor(n: Int, comparator: Comparator<Key>?) {
         this.keys = arrayOfNulls<Any>(n) as Array<Key?>
         this.comparator = comparator ?: Comparator { o1, o2 ->
             if (o1 is Comparable<*>) {
@@ -72,7 +70,7 @@ class MinPQImpl<Key> : MinPQ<Key> {
     }
 
     private tailrec fun swim(k: Int) {
-        if (k < 0 || isHeap(k)) return
+        if (isHeap(k)) return
 
         val (left, right) = children(k)
         val min = min(left, right) ?: return
@@ -82,7 +80,7 @@ class MinPQImpl<Key> : MinPQ<Key> {
     }
 
     private fun sink(k: Int) {
-        if (k >= n || isHeap(k)) return
+        if (isHeap(k)) return
 
         val (left, right) = children(k)
         val min = min(left, right) ?: return
@@ -94,7 +92,7 @@ class MinPQImpl<Key> : MinPQ<Key> {
     }
 
     private fun parent(k: Int): Int {
-        return kotlin.math.max(0, (k - 1) / 2)
+        return (k - 1) / 2
     }
 
     private fun children(k: Int): Pair<Int, Int> {
@@ -105,12 +103,14 @@ class MinPQImpl<Key> : MinPQ<Key> {
     }
 
     private fun swap(i: Int, j: Int) {
-        val tmp = keys[i]
-        keys[i] = keys[j]
-        keys[j] = tmp
+        keys[i] = keys[j].apply {
+            keys[j] = keys[i]
+        }
     }
 
     private fun isHeap(k: Int): Boolean {
+        if (parent(k) >= n) return true
+
         val (left, right) = children(k)
 
         return when {
@@ -141,6 +141,15 @@ class MinPQImpl<Key> : MinPQ<Key> {
 
     override fun iterator(): Iterator<Key> {
         return MinPQIterator()
+    }
+
+    override fun toString(): String {
+        return """MinPQ(${
+        keys
+                .withIndex()
+                .filter { it.value != null }
+                .joinToString { "(${it.index},${it.value})" }
+        })"""
     }
 
     private inner class MinPQIterator : Iterator<Key> {

@@ -1,21 +1,20 @@
 package org.abhijitsarkar.kalgs4.graph
 
-import org.abhijitsarkar.kalgs4.WeightedQuickUnionUF
 import org.abhijitsarkar.kalgs4.mutableBagOf
 import org.abhijitsarkar.kalgs4.sorting.indexedMinPQ
 import org.abhijitsarkar.kalgs4.sorting.minPQ
+import org.abhijitsarkar.kalgs4.unionFind
 
 /**
  * @author Abhijit Sarkar
  */
-
 fun kruskalMST(g: EdgeWeightedGraph): Iterable<Edge> {
     val mst = mutableBagOf<Edge>()
     val minPQ = minPQ<Edge>().apply {
         g.edges.iterator()
                 .forEach(this::insert)
     }
-    val uf = WeightedQuickUnionUF(g.numVertices)
+    val uf = unionFind(g.numVertices)
 
     while (!minPQ.isEmpty && mst.size < g.numVertices - 1) {
         val e = minPQ.deleteMin()
@@ -67,9 +66,9 @@ fun primEagerMST(g: EdgeWeightedGraph): Iterable<Edge> {
         fill(Double.POSITIVE_INFINITY)
     }
     val mst = mutableBagOf<Edge>()
-    val start = 0
+    val src = 0
     val q = indexedMinPQ<Double>(g.numVertices).apply {
-        insert(start, 0.0)
+        insert(src, 0.0)
         for (v in 1 until g.numVertices) insert(v, Double.POSITIVE_INFINITY)
     }
 
@@ -78,7 +77,7 @@ fun primEagerMST(g: EdgeWeightedGraph): Iterable<Edge> {
 
         val v = q.deleteMin()
 
-        if (v != start) {
+        if (v != src) {
             mst.add(Edge(v, edgeTo[v], distTo[v]))
         }
 
@@ -96,6 +95,7 @@ fun primEagerMST(g: EdgeWeightedGraph): Iterable<Edge> {
         visit()
     }
 
+    q.decreaseKey(0, 0.0)
     visit()
 
     return mst

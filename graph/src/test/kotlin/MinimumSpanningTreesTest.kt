@@ -8,7 +8,7 @@ import kotlin.test.assertTrue
 /**
  * @author Abhijit Sarkar
  */
-class MSTAlgorithmsTest {
+class MinimumSpanningTreesTest {
     @Test
     fun `should get MST using Kruskal's algorithm`() {
         assertMST(kruskalMST(buildGraph()))
@@ -25,7 +25,7 @@ class MSTAlgorithmsTest {
     }
 
     private fun assertMST(edges: Iterable<Edge>) {
-        val mst = edges.iterator().asSequence()
+        val mst = edges
                 .map {
                     it.either.run {
                         val p = this
@@ -69,7 +69,7 @@ class MSTAlgorithmsTest {
                 .shuffled()
 
         return EdgeWeightedGraph(8).apply {
-            edges.forEach { addEdge(it) }
+            edges.forEach(this::addEdge)
         }
     }
 }

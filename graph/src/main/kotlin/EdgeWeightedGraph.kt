@@ -16,7 +16,7 @@ class EdgeWeightedGraph(private val v: Int) {
     val numEdges: Int
         get() = e
 
-    fun addEdge(e: Edge): Boolean {
+    fun addEdge(e: Edge) {
         val v = e.either
         val w = e.other(v)
 
@@ -29,8 +29,6 @@ class EdgeWeightedGraph(private val v: Int) {
                     }
                 }
         this.e += 1
-
-        return true
     }
 
     fun adj(v: Int): Iterable<Edge> {

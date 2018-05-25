@@ -16,7 +16,7 @@ class WeightedQuickUnionUFTest {
                 .bufferedReader()
                 .readLines()
 
-        uf = WeightedQuickUnionUF(lines.first().toInt())
+        uf = unionFind(lines.first().toInt())
 
         lines.drop(1)
                 .map { it.split("\\s".toRegex()).map(String::trim) }
